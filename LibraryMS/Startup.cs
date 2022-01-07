@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryMS.Settings;
+using LibraryMS.Interface;
 
 namespace LibraryMS
 {
@@ -33,6 +35,8 @@ namespace LibraryMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureSqlContext(Configuration);
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, Services.MailService>();
             services.AddControllers();
             services.ConfigureCors(); 
             services.ConfigureIISIntegration();

@@ -18,10 +18,14 @@ namespace Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new BookConfiguration()); 
+            modelBuilder.ApplyConfiguration(new BookConfiguration());
+            //modelBuilder.ApplyConfiguration(new RentRequestConfiguration());
         }
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<BookDate> Bookdates { get; set; }
+        public DbSet<RentRequest> RentRequests { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -14,12 +14,16 @@ namespace Repository
         public CategoryRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
         {
-
         }
 
         public void CreateCategory(Category category)
         {
             Create(category);
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            Delete(category);
         }
 
         public IEnumerable<Category> GetAllCategories(bool trackChanges)
@@ -30,6 +34,11 @@ namespace Repository
         public Category GetCategory(int CategoryId, bool trackChanges)
         {
             return FindByCondition(c => c.CategoryId.Equals(CategoryId), trackChanges).SingleOrDefault();
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            Update(category);
         }
     }
 }

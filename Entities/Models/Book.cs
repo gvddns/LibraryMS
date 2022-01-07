@@ -20,5 +20,6 @@ namespace Entities.Models
         public int CategoryId { get; set; }
         public string ImageAddress { get; set; }
         public int NoOfBooks { get; set; }
+        public int rent { get; set; }
     }
 }

@@ -10,6 +10,9 @@ namespace Contracts
     {
         IBookRepository Book { get; }
         ICategoryRepository Category { get; }
+        IBookDateRepository BookDate { get; }
+        IRentRequestRepository RentRequest { get; }
+        IUserRepository User { get; }
         void Save();
     }
 }

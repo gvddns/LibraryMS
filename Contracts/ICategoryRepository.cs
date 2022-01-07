@@ -12,5 +12,7 @@ namespace Contracts
         public IEnumerable<Category> GetAllCategories(bool trackChanges);
         public Category GetCategory(int CategoryId, bool trackChanges);
         void CreateCategory(Category category);
+        public void DeleteCategory(Category category);
+        public void UpdateCategory(Category category);
     }
 }

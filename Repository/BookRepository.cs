@@ -22,9 +22,14 @@ namespace Repository
             Create(book);
         }
 
+        public void DeleteBook(Book book)
+        {
+            Delete(book);
+        }
+
         public IEnumerable<Book> GetAllBooks(bool trackChanges) =>
 
-            FindAll(trackChanges).OrderBy(b => b.BookName).ToList();
+            FindAll(trackChanges).OrderBy(b => b.BookId).ToList();
 
 
         public Book GetBook(int bookId, bool trackChanges)=>
@@ -35,6 +40,11 @@ namespace Repository
         public IEnumerable<Book> GetBooks(int categoryId, bool trackChanges)=>
         
             FindByCondition(b => b.CategoryId.Equals(categoryId), trackChanges).ToList();
-        
+
+
+        void IBookRepository.UpdateBook(Book book)
+        {
+            Update(book);
+        }
     }
 }

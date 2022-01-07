@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class BookDate
+    public class Role
     {
         [Key]
-        public int id { get; set; }
-        public int bookid { get; set; }
-        public DateTime date { get; set; }
+        public int RoleID { get; set; }
+        public string Rolename { get; set; }
     }
 }

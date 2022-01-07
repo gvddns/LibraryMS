@@ -55,7 +55,39 @@ namespace LibraryMS.Controllers
             }
             _repository.Category.CreateCategory(category);
             _repository.Save();
-            return CreatedAtRoute("GetCategory", new { Id = category.CategoryId });
+            return Ok("Successully Added");
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCategory(int id)
+        {
+            Category category = _repository.Category.GetCategory(id, false);
+            if (category == null)
+            {
+                _logger.LogInfo($"Category with id: {id} doesn't exist in the database.");
+                return NotFound("The category record couldn't be found.");
+            }
+            _repository.Category.DeleteCategory(category);
+            _repository.Save();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Category category)
+        {
+            if (category == null)
+            {
+                return BadRequest("category is null.");
+            }
+            Category categoryToUpdate = _repository.Category.GetCategory(id, false);
+            if (categoryToUpdate == null)
+            {
+                return NotFound("The category record couldn't be found.");
+            }
+            category.CategoryId  = id;
+            _repository.Category.UpdateCategory(category);
+            _repository.Save();
+            return NoContent();
         }
     }
 }
