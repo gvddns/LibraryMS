@@ -38,7 +38,9 @@ namespace Repository
         }
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("gvd"));
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings.GetSection("Secret").Value;
+            var key = Encoding.UTF8.GetBytes(secretKey);
             var secret = new SymmetricSecurityKey(key);
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }

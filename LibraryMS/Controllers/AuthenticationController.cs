@@ -31,8 +31,9 @@ namespace LibraryMS.Controllers
         }
 
         [HttpPost] 
+        [Route("Admin")]
         //[ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+        public async Task<IActionResult> RegisterAdmin([FromBody] UserForRegistrationDto userForRegistration)
         {
             var user = _mapper.Map<User>(userForRegistration);
             var result = await _userManager.CreateAsync(user, userForRegistration.Password);
@@ -43,9 +44,27 @@ namespace LibraryMS.Controllers
                     ModelState.TryAddModelError(error.Code, error.Description); 
                 } return BadRequest(ModelState);
             }
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            await _userManager.AddToRoleAsync(user, "Admin");
 
             return Ok("User Created"); 
+        }
+        [HttpPost]
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+        {
+            var user = _mapper.Map<User>(userForRegistration);
+            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+            await _userManager.AddToRoleAsync(user, "User");
+
+            return Ok("User Created");
         }
 
         [HttpPost("login")]
