@@ -1,4 +1,6 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
+using Entities.DTO;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Http;
@@ -16,44 +18,49 @@ namespace LibraryMS.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(IRepositoryManager repository, ILoggerManager logger)
+        public CategoriesController(IRepositoryManager repository, ILoggerManager logger,IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetCategories()
         {
             var categories = _repository.Category.GetAllCategories(trackChanges: false);
-            return Ok(categories);
+            var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+            return Ok(categoriesDto);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetCategory(int id)
         {
-            var categories = _repository.Category.GetCategory(id, trackChanges: false);
-            if (categories == null)
+            var category = _repository.Category.GetCategory(id, trackChanges: false);
+            var categoryDto = _mapper.Map<CategoryDto>(category);
+            if (categoryDto == null)
             {
                 _logger.LogInfo($"Book with id: {id} doesn't exist in the database.");
                 return NotFound();
             }
             else
             {
-                return Ok(categories);
+                return Ok(categoryDto);
             }
         }
 
         [HttpPost]
-        public IActionResult CreateCategory([FromBody]Category category)
+        public IActionResult CreateCategory([FromBody]CategoryCreateDto category)
         {
             if (category == null)
             {
                 _logger.LogError("category sent from client is null.");
                 return BadRequest("category object is null");
             }
-            _repository.Category.CreateCategory(category);
+            var categoryEntity = _mapper.Map<Category>(category);
+            _repository.Category.CreateCategory(categoryEntity);
             _repository.Save();
             return Ok("Successully Added");
         }
@@ -73,7 +80,7 @@ namespace LibraryMS.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Category category)
+        public IActionResult Put(int id, [FromBody] CategoryCreateDto category)
         {
             if (category == null)
             {
@@ -84,8 +91,9 @@ namespace LibraryMS.Controllers
             {
                 return NotFound("The category record couldn't be found.");
             }
-            category.CategoryId  = id;
-            _repository.Category.UpdateCategory(category);
+            var categoryEntity = _mapper.Map<Category>(category);
+            categoryEntity.CategoryId  = id;
+            _repository.Category.UpdateCategory(categoryEntity);
             _repository.Save();
             return NoContent();
         }

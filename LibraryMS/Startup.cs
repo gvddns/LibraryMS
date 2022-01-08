@@ -18,6 +18,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryMS.Settings;
 using LibraryMS.Interface;
+using Contracts;
+using Repository;
 
 namespace LibraryMS
 {
@@ -37,10 +39,16 @@ namespace LibraryMS
             services.ConfigureSqlContext(Configuration);
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, Services.MailService>();
+            services.AddTransient<IAddBookDate, Services.AddBookDate>();
             services.AddControllers();
-            services.ConfigureCors(); 
+            services.ConfigureCors();
+            services.AddAutoMapper(typeof(Startup));
             services.ConfigureIISIntegration();
             services.ConfigureRepositoryManager();
+            services.AddAuthentication();
+            services.ConfigureJWT(Configuration);
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+            services.ConfigureIdentity();
             services.AddAutoMapper(typeof(Startup));
             services.ConfigureLoggerService();
             services.AddSwaggerGen(c =>
@@ -74,6 +82,8 @@ namespace LibraryMS
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

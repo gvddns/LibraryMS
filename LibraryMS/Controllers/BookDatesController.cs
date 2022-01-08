@@ -27,6 +27,7 @@ namespace LibraryMS.Controllers
         public IActionResult GetAllBookDates()
         {
             var bookdates = _repository.BookDate.GetAllBookDates(trackChanges: false);
+            
             return Ok(bookdates);
         }
 
@@ -55,7 +56,7 @@ namespace LibraryMS.Controllers
             }
             _repository.BookDate.CreateBookDate(bookdates);
             _repository.Save();
-            return CreatedAtRoute("GetBookDates", new { Id = bookdates.id },bookdates);
+            return Ok("Successfully Created");
         }
     }
 }

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Models
+namespace Entities.DTO
 {
-    public class RentRequest
+    public class RentRequestUpdateDto
     {
-        [Key]
-        public int id { get; set; }
         public int userid { get; set; }
         public DateTime requestdate { get; set; }
         public DateTime startdate { get; set; }
@@ -19,9 +15,6 @@ namespace Entities.Models
         public int totalrent { get; set; }
         public string approval { get; set; }
         public DateTime approvaldate { get; set; }
-
-        [ForeignKey(nameof(Book))]
         public int BookId { get; set; }
-        public Category book { get; set; }
     }
 }

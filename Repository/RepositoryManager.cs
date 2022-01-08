@@ -15,7 +15,8 @@ namespace Repository
         private ICategoryRepository _categoryRepository;
         private IRentRequestRepository _rentrequestRepository;
         private IBookDateRepository _bookdateRepository;
-        private IUserRepository _userRepository;
+        //private IUserRepository _userRepository;
+        private IPlanRepository _planRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext) 
         { 
@@ -61,16 +62,25 @@ namespace Repository
             }
         }
 
-        public IUserRepository User
+        //public IUserRepository User
+        //{
+        //    get
+        //    {
+        //        if (_userRepository == null)
+        //            _userRepository = new UserRepository(_repositoryContext);
+        //        return _userRepository;
+        //    }
+        //}
+
+        public IPlanRepository Plan
         {
             get
             {
-                if (_userRepository == null)
-                    _userRepository = new UserRepository(_repositoryContext);
-                return _userRepository;
+                if (_planRepository == null)
+                    _planRepository = new PlanRepository(_repositoryContext);
+                return _planRepository;
             }
         }
-
 
         public void Save() => _repositoryContext.SaveChanges();
     }

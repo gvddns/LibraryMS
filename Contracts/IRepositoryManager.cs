@@ -12,7 +12,8 @@ namespace Contracts
         ICategoryRepository Category { get; }
         IBookDateRepository BookDate { get; }
         IRentRequestRepository RentRequest { get; }
-        IUserRepository User { get; }
+        //IUserRepository User { get; }
+        IPlanRepository Plan { get; }
         void Save();
     }
 }

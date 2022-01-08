@@ -24,17 +24,17 @@ namespace Repository
 
         public int FindNpofBooksForDate(int Bookid, DateTime date,bool trackChanges)
         {
-            return (FindByCondition(b => b.bookid.Equals(Bookid) && b.date.Equals(date),trackChanges).Count());
+            return (FindByCondition(b => b.BookId.Equals(Bookid) && b.date.Equals(date),trackChanges).Count());
         }
 
         public IEnumerable<BookDate> GetAllBookDates(bool trackChanges)
         {
-            return FindAll(trackChanges).OrderBy(b => b.id).ToList();
+            return FindAll(trackChanges).ToList();
         }
 
         public IEnumerable<BookDate> GetBookDates(int BookId, bool trackChanges)
         {
-            return FindByCondition(b => b.bookid.Equals(BookId), trackChanges).ToList();
+            return FindByCondition(b => b.BookId.Equals(BookId), trackChanges).ToList();
         }
     }
 }

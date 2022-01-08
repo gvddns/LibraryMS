@@ -12,44 +12,44 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<RentRequest> builder)
         {
-            //builder.HasData(
-            //    new RentRequest
-            //    {
-            //        id=1,
-            //        userid = 0,
-            //        bookid = 0,
-            //        requestdate = new DateTime(2022,01,06),
-            //        startdate = new DateTime(2022, 01, 07),
-            //        enddate = new DateTime(2022, 01, 08),
-            //        totalrent = 0,
-            //        approval= "string",
-            //        approvaldate= new DateTime(2022, 01, 08)
-            //    },
-            //    new RentRequest
-            //    {
-            //        id=2,
-            //        userid = 0,
-            //        bookid = 0,
-            //        requestdate = new DateTime(2022, 01, 06),
-            //        startdate = new DateTime(2022, 01, 07),
-            //        enddate = new DateTime(2022, 01, 08),
-            //        totalrent = 0,
-            //        approval = "string",
-            //        approvaldate = new DateTime(2022, 01, 08)
-            //    },
-            //    new RentRequest
-            //    {
-            //        id=3,
-            //        userid = 0,
-            //        bookid = 0,
-            //        requestdate = new DateTime(2022, 01, 06),
-            //        startdate = new DateTime(2022, 01, 07),
-            //        enddate = new DateTime(2022, 01, 08),
-            //        totalrent = 0,
-            //        approval = "string",
-            //        approvaldate = new DateTime(2022, 01, 08)
-            //    }
-            //    );
+            builder.HasData(
+                new RentRequest
+                {
+                    id = 1,
+                    userid = 0,
+                    BookId = 2,
+                    requestdate = new DateTime(2022, 01, 06),
+                    startdate = new DateTime(2022, 01, 07),
+                    enddate = new DateTime(2022, 01, 08),
+                    totalrent = 20,
+                    approval = "Pending",
+                    approvaldate = new DateTime(2022, 01, 08)
+                },
+                new RentRequest
+                {
+                    id = 2,
+                    userid = 0,
+                    BookId = 3,
+                    requestdate = new DateTime(2022, 01, 06),
+                    startdate = new DateTime(2022, 01, 07),
+                    enddate = new DateTime(2022, 01, 08),
+                    totalrent = 30,
+                    approval = "Pending",
+                    approvaldate = new DateTime(2022, 01, 08)
+                },
+                new RentRequest
+                {
+                    id = 3,
+                    userid = 0,
+                    BookId = 1,
+                    requestdate = new DateTime(2022, 01, 06),
+                    startdate = new DateTime(2022, 01, 07),
+                    enddate = new DateTime(2022, 01, 08),
+                    totalrent = 40,
+                    approval = "Pending",
+                    approvaldate = new DateTime(2022, 01, 08)
+                }
+                );
         }
     }
 }

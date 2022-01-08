@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryMS.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220106184414_initial")]
+    [Migration("20220107203208_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,8 @@ namespace LibraryMS.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("BookId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Books");
 
@@ -94,13 +96,15 @@ namespace LibraryMS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("bookid")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
                     b.HasKey("id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Bookdates");
                 });
@@ -144,6 +148,27 @@ namespace LibraryMS.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Entities.Models.Plan", b =>
+                {
+                    b.Property<int>("Planid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("planName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Planid");
+
+                    b.ToTable("Plans");
+                });
+
             modelBuilder.Entity("Entities.Models.RentRequest", b =>
                 {
                     b.Property<int>("id")
@@ -151,23 +176,23 @@ namespace LibraryMS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
                     b.Property<string>("approval")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("approvaldate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("approvaldate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("bookid")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("enddate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("enddate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("requestdate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("requestdate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("startdate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("startdate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("totalrent")
                         .HasColumnType("int");
@@ -176,6 +201,8 @@ namespace LibraryMS.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("RentRequests");
                 });
@@ -211,7 +238,7 @@ namespace LibraryMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("planexpiry")
+                    b.Property<DateTime>("planValidity")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("role")
@@ -220,6 +247,39 @@ namespace LibraryMS.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Entities.Models.Book", b =>
+                {
+                    b.HasOne("Entities.Models.Category", "category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("category");
+                });
+
+            modelBuilder.Entity("Entities.Models.BookDate", b =>
+                {
+                    b.HasOne("Entities.Models.Book", "book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("book");
+                });
+
+            modelBuilder.Entity("Entities.Models.RentRequest", b =>
+                {
+                    b.HasOne("Entities.Models.Category", "book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("book");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,7 +31,7 @@ namespace LibraryMS.Services
             //User user = _repository.User.GetUser(rentRequest.userid,false);
             MailRequest mailRequest = new MailRequest();
             mailRequest.ToEmail = "govindaboob@gmail.com";
-            Book book = _repository.Book.GetBook(rentRequest.bookid, false);
+            Book book = _repository.Book.GetBook(rentRequest.BookId, false);
             mailRequest.Subject = "Confirmation of rent request of book " + book.BookName.ToString();
             mailRequest.Body = "We are happy to inform you that your renting request for the book " +
                 "is approved so you can rent the book " + book.BookName.ToString() + "at the date " +
