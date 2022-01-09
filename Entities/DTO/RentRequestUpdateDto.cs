@@ -8,7 +8,7 @@ namespace Entities.DTO
 {
     public class RentRequestUpdateDto
     {
-        public int userid { get; set; }
+        public string username { get; set; }
         public DateTime requestdate { get; set; }
         public DateTime startdate { get; set; }
         public DateTime enddate { get; set; }

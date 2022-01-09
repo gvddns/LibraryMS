@@ -5,6 +5,7 @@ using Entities.Models;
 using LibraryMS.Interface;
 using LibraryMS.Services;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,39 +24,38 @@ namespace LibraryMS.Controllers
         private readonly IMailService _mailService;
         private readonly IMapper _mapper;
         private readonly IAddBookDate _addBookDate;
+        private readonly IGetUserData _getUserData;
 
-        public RentRequestsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IMailService mailService, IAddBookDate addBookDate)
+        public RentRequestsController(IRepositoryManager repository, ILoggerManager logger, 
+            IMapper mapper, IMailService mailService, IAddBookDate addBookDate, IGetUserData getUserData)
         {
             _repository = repository;
             _logger = logger;
             _mailService = mailService;
             _mapper = mapper;
             _addBookDate = addBookDate;
+            _getUserData = getUserData;
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetRentRequests()
         {
             var rentrequest = _repository.RentRequest.GetAllRentRequests(trackChanges: false);
             //var rentrequestEntity = _mapper.Map<RentRequestUpdateDto>(rentrequest);
-            return Ok(rentrequest);
+            var rentrequestDto = _mapper.Map<IEnumerable<RentRequestDto>>(rentrequest);
+            return Ok(rentrequestDto);
         }
 
-        //[HttpGet("{id}")]
-        //public IActionResult GetRentrequests(int id)
-        //{
-        //    var rentrequests = _repository.RentRequest.GetRentRequests(id, trackChanges: false);
-        //    if (rentrequests == null)
-        //    {
-        //        _logger.LogInfo($"rentrequests with id: {id} doesn't exist in the database.");
-        //        return NotFound();
-        //    }
-        //    else
-        //    {
-        //        return Ok(rentrequests);
-        //    }
-        //}
+        [HttpGet("username")]
+        public IActionResult GetRentrequests(string username)
+        {
+            var rentrequests = _repository.RentRequest.GetRentRequests(username, trackChanges: false);
+            var rentrequestDto = _mapper.Map<IEnumerable<RentRequestDto>>(rentrequests);
+            return Ok(rentrequestDto);
+        }
 
+        //[Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult CreateRentRequest([FromBody] RentRequestCreateDto rentrequests)
         {
@@ -66,11 +66,15 @@ namespace LibraryMS.Controllers
             }
             var rentrequestsEntity = _mapper.Map<RentRequest>(rentrequests);
             rentrequestsEntity.approval = "Pending";
+            var book = _repository.Book.GetBook(rentrequestsEntity.BookId, false);
+
+            rentrequestsEntity.totalrent = Math.Max(book.rent,(rentrequestsEntity.startdate.Date - rentrequestsEntity.enddate.Date).Days*book.rent);
             _repository.RentRequest.CreateRentRequest(rentrequestsEntity);
             _repository.Save();
             return Ok(rentrequests);
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpPut]
         public IActionResult RentRequestUpdate([FromBody] RentRequestDto rentRequest)
         {
@@ -86,7 +90,7 @@ namespace LibraryMS.Controllers
             var rentRequestEntity = _mapper.Map<RentRequest>(rentRequest);
             _repository.RentRequest.UpdateRentRequest(rentRequestEntity);
             _repository.Save();
-            CreateMail createMail = new CreateMail(_repository,_logger,_mailService);
+            CreateMail createMail = new CreateMail(_repository,_logger,_mailService, _getUserData);
             if (rentRequest.approval == "Approved" && rentRequestToUpdate.approval=="Pending")
             {
                 createMail.NewMail(rentRequestEntity);

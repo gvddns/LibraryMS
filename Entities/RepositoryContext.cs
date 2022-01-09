@@ -22,7 +22,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new BookConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            //modelBuilder.ApplyConfiguration(new RentRequestConfiguration());
+            modelBuilder.ApplyConfiguration(new RentRequestConfiguration());
         }
 
         public DbSet<Book> Books { get; set; }
@@ -31,6 +31,7 @@ namespace Entities
         public DbSet<RentRequest> RentRequests { get; set; }
         //public DbSet<User> Users { get; set; }
         public DbSet<Plan> Plans { get; set; }
+        public DbSet<UserPlanValidity> UserPlanValidity { get; set; }
 
     }
 }

@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DTO;
 using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,6 +36,7 @@ namespace LibraryMS.Controllers
             return Ok(plansDto);
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreatePlan([FromBody] PlanCreateDto plan)
         {
@@ -49,6 +51,7 @@ namespace LibraryMS.Controllers
             return Ok("Successully Added");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeletePlan(int id)
         {
@@ -63,6 +66,7 @@ namespace LibraryMS.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] PlanCreateDto plan)
         {

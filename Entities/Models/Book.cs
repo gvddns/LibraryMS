@@ -23,7 +23,7 @@ namespace Entities.Models
         public int NoOfBooks { get; set; }
         [Required(ErrorMessage = "Rent is a required field.")]
         public int rent { get; set; }
-        [ForeignKey(nameof(Category))] 
+        [ForeignKey ("CategoryId")] 
         public int CategoryId { get; set; }
         public Category category { get; set; }
     }

@@ -193,14 +193,52 @@ namespace LibraryMS.Migrations
                     b.Property<int>("totalrent")
                         .HasColumnType("int");
 
-                    b.Property<int>("userid")
-                        .HasColumnType("int");
+                    b.Property<string>("username")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
                     b.HasIndex("BookId");
 
                     b.ToTable("RentRequests");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            BookId = 2,
+                            approval = "Pending",
+                            approvaldate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            enddate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            requestdate = new DateTime(2022, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            startdate = new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            totalrent = 20,
+                            username = "gvddns"
+                        },
+                        new
+                        {
+                            id = 2,
+                            BookId = 3,
+                            approval = "Pending",
+                            approvaldate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            enddate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            requestdate = new DateTime(2022, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            startdate = new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            totalrent = 30,
+                            username = "gvddns"
+                        },
+                        new
+                        {
+                            id = 3,
+                            BookId = 1,
+                            approval = "Pending",
+                            approvaldate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            enddate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            requestdate = new DateTime(2022, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            startdate = new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            totalrent = 40,
+                            username = "gvddns"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -210,6 +248,9 @@ namespace LibraryMS.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -251,6 +292,9 @@ namespace LibraryMS.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("PlanDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -272,6 +316,24 @@ namespace LibraryMS.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Entities.Models.UserPlanValidity", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("planEnddate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("id");
+
+                    b.ToTable("UserPlanValidity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -303,15 +365,15 @@ namespace LibraryMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "87b5d2a3-5ccc-4295-a445-1ebbe67eb27c",
-                            ConcurrencyStamp = "9e285220-0f9b-4ff0-8f67-4802e4a0d10b",
+                            Id = "c3679fdf-acf3-4901-9d61-4988a9f6832c",
+                            ConcurrencyStamp = "e937a789-9239-48a9-80cd-c7e654ebe368",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "7dcfb558-249e-463d-9612-8b4d42c8c172",
-                            ConcurrencyStamp = "26e934d7-2a41-4ff3-8a40-639af977f761",
+                            Id = "b8c2d7f9-1794-4397-9582-23259adcc0d6",
+                            ConcurrencyStamp = "58d3560c-cb38-47d9-9618-8fd2649ba444",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });

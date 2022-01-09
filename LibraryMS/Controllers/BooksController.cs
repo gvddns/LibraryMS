@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DTO;
 using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -64,6 +65,7 @@ namespace LibraryMS.Controllers
             return Ok(booksDto);
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] BookCreateDto book)
         {
@@ -84,6 +86,7 @@ namespace LibraryMS.Controllers
             return Ok("Successully Added");
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
@@ -97,7 +100,8 @@ namespace LibraryMS.Controllers
             _repository.Save();
             return NoContent();
         }
-
+        
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] BookCreateDto book)
         {
@@ -115,7 +119,7 @@ namespace LibraryMS.Controllers
             bookEntity.BookId= id;
             _repository.Book.UpdateBook(bookEntity);
             _repository.Save();
-            return NoContent();
+            return Ok("Updated Successfully");
         }
 
         [HttpGet]

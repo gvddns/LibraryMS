@@ -14,6 +14,7 @@ namespace Contracts
         IRentRequestRepository RentRequest { get; }
         //IUserRepository User { get; }
         IPlanRepository Plan { get; }
+        IUserPlanValidityRepository UserPlanValidity { get; }
         void Save();
     }
 }

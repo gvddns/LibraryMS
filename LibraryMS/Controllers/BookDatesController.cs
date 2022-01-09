@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +24,7 @@ namespace LibraryMS.Controllers
             _logger = logger;
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAllBookDates()
         {
@@ -31,6 +33,7 @@ namespace LibraryMS.Controllers
             return Ok(bookdates);
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public IActionResult GetBookdates(int id)
         {
@@ -46,6 +49,8 @@ namespace LibraryMS.Controllers
             }
         }
 
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateBookDate([FromBody] BookDate bookdates)
         {

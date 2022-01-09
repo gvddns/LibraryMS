@@ -12,7 +12,7 @@ namespace Entities.Models
     {
         [Key]
         public int id { get; set; }
-        public int userid { get; set; }
+        public string username { get; set; }
         public DateTime requestdate { get; set; }
         public DateTime startdate { get; set; }
         public DateTime enddate { get; set; }

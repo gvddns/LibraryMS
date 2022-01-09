@@ -12,8 +12,8 @@ namespace Entities.Models
         [Key]
         public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = "Book name is a required field.")]
-        [MaxLength(60, ErrorMessage = "Maximum length for the Name is 60 characters.")]
+        [Required(ErrorMessage = "Category name is a required field.")]
+        [MaxLength(40, ErrorMessage = "Maximum length for the Name is 40 characters.")]
         public string CategoryName { get; set; }
     }
 }

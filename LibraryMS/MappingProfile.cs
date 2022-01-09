@@ -23,10 +23,11 @@ namespace LibraryMS
             CreateMap<RentRequest, RentRequestUpdateDto>();
             CreateMap<PlanCreateDto, Plan>();
             CreateMap<Plan,PlanDto>();
-            CreateMap<UserCreateDto,User>();
-            CreateMap<User, UserDto>();
             CreateMap<BookDateDto, BookDate>();
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<UserProfileEditDto, User>();
+            CreateMap<User, UserProfileDto>();
+            CreateMap<UserPlanValidityDto, UserPlanValidity>();
         }
 
     }

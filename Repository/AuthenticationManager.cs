@@ -29,6 +29,8 @@ namespace Repository
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
             return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
         }
+
+
         public async Task<string> CreateToken() 
         {
             var signingCredentials = GetSigningCredentials();
@@ -52,6 +54,7 @@ namespace Repository
             }
             return claims;
         }
+
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
         { var jwtSettings = _configuration.GetSection("JwtSettings");
             var tokenOptions = 
@@ -63,5 +66,7 @@ namespace Repository
                     signingCredentials: signingCredentials);
             return tokenOptions; 
         }
+
+        
     }
 }

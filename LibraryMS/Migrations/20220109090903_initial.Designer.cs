@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryMS.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220108064427_CreatingIdentityTables2")]
-    partial class CreatingIdentityTables2
+    [Migration("20220109090903_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -195,8 +195,8 @@ namespace LibraryMS.Migrations
                     b.Property<int>("totalrent")
                         .HasColumnType("int");
 
-                    b.Property<int>("userid")
-                        .HasColumnType("int");
+                    b.Property<string>("username")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
@@ -212,6 +212,9 @@ namespace LibraryMS.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -253,6 +256,9 @@ namespace LibraryMS.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("PlanDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -274,6 +280,24 @@ namespace LibraryMS.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Entities.Models.UserPlanValidity", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("planEnddate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("id");
+
+                    b.ToTable("UserPlanValidity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -301,6 +325,22 @@ namespace LibraryMS.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "eeb2f0ee-cece-40bb-a99b-4b14d59be123",
+                            ConcurrencyStamp = "885e7944-401d-4af5-8990-1c10f0616963",
+                            Name = "User",
+                            NormalizedName = "User"
+                        },
+                        new
+                        {
+                            Id = "e2bcf0eb-86e6-480f-bdd7-66dccd1ef02d",
+                            ConcurrencyStamp = "1f9acade-f3c3-4415-9451-4989d0189593",
+                            Name = "Admin",
+                            NormalizedName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

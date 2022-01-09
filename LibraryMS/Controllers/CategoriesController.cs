@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DTO;
 using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -50,7 +51,8 @@ namespace LibraryMS.Controllers
                 return Ok(categoryDto);
             }
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateCategory([FromBody]CategoryCreateDto category)
         {
@@ -65,6 +67,7 @@ namespace LibraryMS.Controllers
             return Ok("Successully Added");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id)
         {
@@ -79,6 +82,7 @@ namespace LibraryMS.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] CategoryCreateDto category)
         {

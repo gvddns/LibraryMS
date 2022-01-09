@@ -11,7 +11,7 @@ namespace Contracts
     {
         public void CreateRentRequest(RentRequest bookdate);
         public IEnumerable<RentRequest> GetAllRentRequests(bool trackChanges);
-        //IEnumerable<RentRequest> GetRentRequests(int UserId, bool trackChanges);
+        IEnumerable<RentRequest> GetRentRequests(string username, bool trackChanges);
         public RentRequest GetRentRequest(int UserId, bool trackChanges);
         public void UpdateRentRequest(RentRequest rentRequest);
     }

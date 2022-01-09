@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Entities.DTO
 {
-    public class UserCreateDto
+    public class UserPlanValidityDto
     {
+        public DateTime planEnddate { get; set; }
+        public string UserName { get; set; }
     }
 }

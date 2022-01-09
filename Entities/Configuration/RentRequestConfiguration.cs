@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Configuration
 {
-    class RentRequestConfiguration
+    class RentRequestConfiguration : IEntityTypeConfiguration<RentRequest>
     {
         public void Configure(EntityTypeBuilder<RentRequest> builder)
         {
@@ -16,7 +17,7 @@ namespace Entities.Configuration
                 new RentRequest
                 {
                     id = 1,
-                    userid = 0,
+                    username = "gvddns",
                     BookId = 2,
                     requestdate = new DateTime(2022, 01, 06),
                     startdate = new DateTime(2022, 01, 07),
@@ -28,7 +29,7 @@ namespace Entities.Configuration
                 new RentRequest
                 {
                     id = 2,
-                    userid = 0,
+                    username = "gvddns",
                     BookId = 3,
                     requestdate = new DateTime(2022, 01, 06),
                     startdate = new DateTime(2022, 01, 07),
@@ -40,7 +41,7 @@ namespace Entities.Configuration
                 new RentRequest
                 {
                     id = 3,
-                    userid = 0,
+                    username = "gvddns",
                     BookId = 1,
                     requestdate = new DateTime(2022, 01, 06),
                     startdate = new DateTime(2022, 01, 07),

@@ -37,9 +37,9 @@ namespace Repository
             return FindAll(trackChanges).OrderBy(b => b.id).ToList();
         }
 
-        //IEnumerable<RentRequest> IRentRequestRepository.GetRentRequests(int UserId, bool trackChanges)
-        //{
-        //    return FindByCondition(b => b.userid.Equals(UserId), trackChanges).ToList();
-        //}
+        IEnumerable<RentRequest> IRentRequestRepository.GetRentRequests(string username, bool trackChanges)
+        {
+            return FindByCondition(b => b.username.Equals(username), trackChanges).ToList();
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace Repository
         private IRentRequestRepository _rentrequestRepository;
         private IBookDateRepository _bookdateRepository;
         //private IUserRepository _userRepository;
+        private IUserPlanValidityRepository _userPlanValidityRepository;
         private IPlanRepository _planRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext) 
@@ -62,16 +63,6 @@ namespace Repository
             }
         }
 
-        //public IUserRepository User
-        //{
-        //    get
-        //    {
-        //        if (_userRepository == null)
-        //            _userRepository = new UserRepository(_repositoryContext);
-        //        return _userRepository;
-        //    }
-        //}
-
         public IPlanRepository Plan
         {
             get
@@ -79,6 +70,16 @@ namespace Repository
                 if (_planRepository == null)
                     _planRepository = new PlanRepository(_repositoryContext);
                 return _planRepository;
+            }
+        }
+
+        public IUserPlanValidityRepository UserPlanValidity
+        {
+            get
+            {
+                if (_userPlanValidityRepository == null)
+                    _userPlanValidityRepository = new UserPlanValidityRepository(_repositoryContext);
+                return _userPlanValidityRepository;
             }
         }
 

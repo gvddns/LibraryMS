@@ -40,6 +40,11 @@ namespace LibraryMS
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, Services.MailService>();
             services.AddTransient<IAddBookDate, Services.AddBookDate>();
+            services.AddTransient<IPlanValidity, Services.PlanValidity>();
+            services.AddTransient<IGetUserData, Services.GetUserData>();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.ConfigureCors();
             services.AddAutoMapper(typeof(Startup));
