@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Entities;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Repository
         private ICategoryRepository _categoryRepository;
         private IRentRequestRepository _rentrequestRepository;
         private IBookDateRepository _bookdateRepository;
+        private IMapper _mapper;
         //private IUserRepository _userRepository;
         private IUserPlanValidityRepository _userPlanValidityRepository;
         private IPlanRepository _planRepository;
@@ -83,6 +85,10 @@ namespace Repository
             }
         }
 
-        public void Save() => _repositoryContext.SaveChanges();
+        public Task SaveAsync() => _repositoryContext.SaveChangesAsync();
+        public void Save()
+        {
+            _repositoryContext.SaveChanges();
+        }
     }
 }

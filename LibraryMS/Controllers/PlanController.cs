@@ -38,22 +38,17 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreatePlan([FromBody] PlanCreateDto plan)
+        public async Task<IActionResult> CreatePlan([FromBody] PlanCreateDto plan)
         {
-            if (plan == null)
-            {
-                _logger.LogError("Plan sent from client is null.");
-                return BadRequest("Plan object is null");
-            }
             var planEntity = _mapper.Map<Plan>(plan);
             _repository.Plan.CreatePlan(planEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
             return Ok("Successully Added");
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public IActionResult DeletePlan(int id)
+        public async Task<IActionResult> DeletePlan(int id)
         {
             Plan plan = _repository.Plan.GetPlan(id, false);
             if (plan == null)
@@ -62,18 +57,14 @@ namespace LibraryMS.Controllers
                 return NotFound("The Plan record couldn't be found.");
             }
             _repository.Plan.DeletePlan(plan);
-            _repository.Save();
+            await _repository.SaveAsync();
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] PlanCreateDto plan)
+        public async Task<IActionResult> Put(int id, [FromBody] PlanCreateDto plan)
         {
-            if (plan == null)
-            {
-                return BadRequest("Plan is null.");
-            }
             Plan planToUpdate = _repository.Plan.GetPlan(id, false);
             if (planToUpdate == null)
             {
@@ -82,7 +73,7 @@ namespace LibraryMS.Controllers
             var planEntity = _mapper.Map<Plan>(plan);
             planEntity.Planid = id;
             _repository.Plan.UpdatePlan(planEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
             return NoContent();
         }
     }

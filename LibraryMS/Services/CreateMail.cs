@@ -15,18 +15,22 @@ namespace LibraryMS.Services
         private readonly ILoggerManager _logger;
         private readonly IMailService _mailService;
         private readonly IGetUserData _getUserData;
-        
+        private readonly IAddBookDate _addBookDate;
 
 
-        public CreateMail(IRepositoryManager repository, ILoggerManager logger,IMailService mailService, IGetUserData getUserData)
+
+
+        public CreateMail(IRepositoryManager repository, ILoggerManager logger,
+            IMailService mailService, IGetUserData getUserData, IAddBookDate addBookDate)
         {
             _repository = repository;
             _logger = logger;
             _mailService = mailService;
             _getUserData = getUserData;
+            _addBookDate = addBookDate;
         }
 
-        public async void NewMail(RentRequest rentRequest)
+        public async Task NewMail(RentRequest rentRequest)
         {
             string mailid = await _getUserData.GetEmail(rentRequest.username);
             //User user = _repository.User.GetUser(rentRequest.userid,false);
@@ -38,6 +42,9 @@ namespace LibraryMS.Services
                 "is approved so you can rent the book " + book.BookName.ToString() + " at the date " +
                 rentRequest.startdate.ToString();
             await _mailService.SendEmailAsync(mailRequest);
+            _addBookDate.AddBooks(rentRequest.startdate,
+                   rentRequest.enddate, rentRequest.BookId);
+
         }
 
         public void NewRegistrationMail(string username,string mailid)

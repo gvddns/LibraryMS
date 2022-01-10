@@ -10,6 +10,8 @@ namespace Contracts
     public interface IBookDateRepository
     {
         public void CreateBookDate(BookDate bookdate);
+        public void CreateBookDate(IEnumerable<BookDate> bookdate);
+
         public IEnumerable<BookDate> GetAllBookDates(bool trackChanges);
         IEnumerable<BookDate> GetBookDates(int BookId, bool trackChanges);
         public int FindNpofBooksForDate(int Bookid, DateTime date, bool trackChanges);

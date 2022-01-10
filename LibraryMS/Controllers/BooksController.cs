@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DTO;
 using Entities.Models;
+using LibraryMS.Interface;
 using LoggerService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,12 +21,15 @@ namespace LibraryMS.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IBookBL _bookbl;
 
-        public BooksController(IRepositoryManager repository, ILoggerManager logger,IMapper mapper)
+        public BooksController(IRepositoryManager repository, ILoggerManager logger,
+            IMapper mapper, IBookBL bookbl)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _bookbl = bookbl;
         }
 
         [HttpGet] 
@@ -52,9 +56,9 @@ namespace LibraryMS.Controllers
         //}
 
         [HttpGet("{categoryid}")]
-        public IActionResult GetBooksForCategory(int categoryid)
+        public async Task<IActionResult> GetBooksForCategory(int categoryid)
         {
-            var category = _repository.Category.GetCategory(categoryid, trackChanges: false);
+            var category = await _repository.Category.GetCategoryAsync(categoryid, trackChanges: false);
             if (category == null)
             {
                 _logger.LogInfo($"Category with id: {categoryid} doesn't exist in the database.");
@@ -67,14 +71,9 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Post([FromBody] BookCreateDto book)
+        public async Task<IActionResult> Post([FromBody] BookCreateDto book)
         {
-            if (book == null)
-            {
-                _logger.LogError("Book sent from client is null.");
-                return BadRequest("Book is null.");
-            }
-            var category = _repository.Category.GetCategory(book.CategoryId,false);
+            var category = await _repository.Category.GetCategoryAsync(book.CategoryId,false);
             if (category == null)
             {
                 _logger.LogError("Category sent from client is null.");
@@ -82,44 +81,34 @@ namespace LibraryMS.Controllers
             }
             var bookEntity = _mapper.Map<Book>(book);
             _repository.Book.CreateBook(bookEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
             return Ok("Successully Added");
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public IActionResult DeleteBook(int id)
+        public async Task<IActionResult> DeleteBook(int id)
         {
-            Book book = _repository.Book.GetBook(id,false);
-            if (book == null)
-            {
-                _logger.LogInfo($"Company with id: {id} doesn't exist in the database.");
-                return NotFound("The book record couldn't be found.");
-            }
-            _repository.Book.DeleteBook(book);
-            _repository.Save();
-            return NoContent();
+            var response= _repository.Book.DeleteBook(id);
+            await _repository.SaveAsync();
+            return Ok(response);
         }
         
         //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] BookCreateDto book)
+        public async Task<IActionResult> Put(int id, [FromBody] BookCreateDto book)
         {
-            if (book == null)
-            {
-                return BadRequest("book is null.");
-            }
-            Book bookToUpdate = _repository.Book.GetBook(id,false);
-            if (bookToUpdate == null)
-            {
-                return NotFound("The book record couldn't be found.");
-            }
-            
-            var bookEntity = _mapper.Map<Book>(book);
-            bookEntity.BookId= id;
-            _repository.Book.UpdateBook(bookEntity);
-            _repository.Save();
-            return Ok("Updated Successfully");
+            return Ok( await _bookbl.UpdateBookbyId(id,book));
+            //Book bookToUpdate = _repository.Book.GetBook(id,false);
+            //if (bookToUpdate == null)
+            //{
+            //    return NotFound("The book record couldn't be found.");
+            //}
+            //var bookEntity = _mapper.Map<Book>(book);
+            //bookEntity.BookId= id;
+            //_repository.Book.UpdateBook(bookEntity);
+            //await _repository.SaveAsync();
+            //return Ok("Updated Successfully");
         }
 
         [HttpGet]

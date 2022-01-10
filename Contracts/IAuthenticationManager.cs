@@ -1,4 +1,5 @@
 ﻿using Entities.DTO;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Contracts
     {
         Task<bool> ValidateUser(UserForAuthenticationDto userForAuth);
         Task<string> CreateToken();
+        Task<IdentityResult> ChangePassword(PasswordDto passwordDto);
     }
 }

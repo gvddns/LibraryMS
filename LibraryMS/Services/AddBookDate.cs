@@ -21,7 +21,7 @@ namespace LibraryMS.Services
             _mapper = mapper;
         }
 
-        public async void AddBooks(DateTime startdate, DateTime enddate,int Bookid)
+        public void AddBooks(DateTime startdate, DateTime enddate,int Bookid)
         {
             BookDateDto bookDate = new BookDateDto()
             {

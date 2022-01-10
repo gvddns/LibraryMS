@@ -21,6 +21,8 @@ using LibraryMS.Interface;
 using Contracts;
 using Repository;
 
+
+
 namespace LibraryMS
 {
     public class Startup
@@ -42,6 +44,8 @@ namespace LibraryMS
             services.AddTransient<IAddBookDate, Services.AddBookDate>();
             services.AddTransient<IPlanValidity, Services.PlanValidity>();
             services.AddTransient<IGetUserData, Services.GetUserData>();
+            services.AddTransient<IBookBL, Services.BookBL>();
+
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

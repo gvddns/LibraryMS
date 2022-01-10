@@ -9,8 +9,8 @@ namespace Contracts
 {
     public interface ICategoryRepository
     {
-        public IEnumerable<Category> GetAllCategories(bool trackChanges);
-        public Category GetCategory(int CategoryId, bool trackChanges);
+        public Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges);
+        public Task<Category> GetCategoryAsync(int CategoryId, bool trackChanges);
         void CreateCategory(Category category);
         public void DeleteCategory(Category category);
         public void UpdateCategory(Category category);

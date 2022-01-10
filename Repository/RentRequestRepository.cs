@@ -24,7 +24,7 @@ namespace Repository
 
         public RentRequest GetRentRequest(int id, bool trackChanges)
         {
-            return FindByCondition(c => c.id.Equals(id), trackChanges).SingleOrDefault();
+            return FindByCondition(c => c.rid.Equals(id), trackChanges).SingleOrDefault();
         }
 
         public void UpdateRentRequest(RentRequest rentRequest)
@@ -34,7 +34,7 @@ namespace Repository
 
         IEnumerable<RentRequest> IRentRequestRepository.GetAllRentRequests(bool trackChanges)
         {
-            return FindAll(trackChanges).OrderBy(b => b.id).ToList();
+            return FindAll(trackChanges).OrderBy(b => b.rid).ToList();
         }
 
         IEnumerable<RentRequest> IRentRequestRepository.GetRentRequests(string username, bool trackChanges)

@@ -29,17 +29,17 @@ namespace LibraryMS.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var categories = _repository.Category.GetAllCategories(trackChanges: false);
+            var categories = await _repository.Category.GetAllCategoriesAsync(trackChanges: false);
             var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
             return Ok(categoriesDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCategory(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
-            var category = _repository.Category.GetCategory(id, trackChanges: false);
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
             var categoryDto = _mapper.Map<CategoryDto>(category);
             if (categoryDto == null)
             {
@@ -52,9 +52,9 @@ namespace LibraryMS.Controllers
             }
         }
         
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreateCategory([FromBody]CategoryCreateDto category)
+        public async Task<IActionResult> CreateCategory([FromBody]CategoryCreateDto category)
         {
             if (category == null)
             {
@@ -63,34 +63,34 @@ namespace LibraryMS.Controllers
             }
             var categoryEntity = _mapper.Map<Category>(category);
             _repository.Category.CreateCategory(categoryEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
             return Ok("Successully Added");
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public IActionResult DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            Category category = _repository.Category.GetCategory(id, false);
+            Category category = await _repository.Category.GetCategoryAsync(id, false);
             if (category == null)
             {
                 _logger.LogInfo($"Category with id: {id} doesn't exist in the database.");
                 return NotFound("The category record couldn't be found.");
             }
             _repository.Category.DeleteCategory(category);
-            _repository.Save();
-            return NoContent();
+            await _repository.SaveAsync();
+            return  Ok();
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] CategoryCreateDto category)
+        public async Task<IActionResult> Put(int id, [FromBody] CategoryCreateDto category)
         {
             if (category == null)
             {
                 return BadRequest("category is null.");
             }
-            Category categoryToUpdate = _repository.Category.GetCategory(id, false);
+            Category categoryToUpdate = await _repository.Category.GetCategoryAsync(id, false);
             if (categoryToUpdate == null)
             {
                 return NotFound("The category record couldn't be found.");
@@ -98,7 +98,7 @@ namespace LibraryMS.Controllers
             var categoryEntity = _mapper.Map<Category>(category);
             categoryEntity.CategoryId  = id;
             _repository.Category.UpdateCategory(categoryEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
             return NoContent();
         }
     }

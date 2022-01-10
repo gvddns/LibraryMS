@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryMS.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,7 +70,7 @@ namespace LibraryMS.Migrations
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,7 +240,7 @@ namespace LibraryMS.Migrations
                 name: "RentRequests",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    rid = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     requestdate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -249,11 +249,18 @@ namespace LibraryMS.Migrations
                     totalrent = table.Column<int>(type: "int", nullable: false),
                     approval = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     approvaldate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BookId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RentRequests", x => x.id);
+                    table.PrimaryKey("PK_RentRequests", x => x.rid);
+                    table.ForeignKey(
+                        name: "FK_RentRequests_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_RentRequests_Categories_BookId",
                         column: x => x.BookId,
@@ -267,8 +274,8 @@ namespace LibraryMS.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "eeb2f0ee-cece-40bb-a99b-4b14d59be123", "885e7944-401d-4af5-8990-1c10f0616963", "User", "User" },
-                    { "e2bcf0eb-86e6-480f-bdd7-66dccd1ef02d", "1f9acade-f3c3-4415-9451-4989d0189593", "Admin", "Admin" }
+                    { "168e6bb0-f62b-4462-b4ea-4f1ad026cb53", "a6d6223b-3405-4327-ad03-2b0b54f5cc46", "User", "User" },
+                    { "d6373dba-77a6-4539-b485-dac4c0d6f50c", "e847a356-9ea2-4355-b72e-325a9a5b2ab9", "Admin", "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -345,6 +352,11 @@ namespace LibraryMS.Migrations
                 name: "IX_RentRequests_BookId",
                 table: "RentRequests",
                 column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentRequests_Id",
+                table: "RentRequests",
+                column: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

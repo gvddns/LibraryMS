@@ -27,4 +27,9 @@
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DALInterface\" />
+    <Folder Include="DataAccess\" />
+  </ItemGroup>
+
 </Project>

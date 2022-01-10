@@ -29,7 +29,6 @@ namespace LibraryMS.Controllers
         public IActionResult GetAllBookDates()
         {
             var bookdates = _repository.BookDate.GetAllBookDates(trackChanges: false);
-            
             return Ok(bookdates);
         }
 
@@ -44,23 +43,16 @@ namespace LibraryMS.Controllers
                 return NotFound();
             }
             else
-            {
-                return Ok(bookdates);
-            }
+                return Ok(bookdates);    
         }
 
         //[Authorize(Roles = "User")]
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreateBookDate([FromBody] BookDate bookdates)
+        public async Task<IActionResult> CreateBookDate([FromBody] BookDate bookdates)
         {
-            if (bookdates == null)
-            {
-                _logger.LogError("category sent from client is null.");
-                return BadRequest("category object is null");
-            }
             _repository.BookDate.CreateBookDate(bookdates);
-            _repository.Save();
+            await _repository.SaveAsync();
             return Ok("Successfully Created");
         }
     }

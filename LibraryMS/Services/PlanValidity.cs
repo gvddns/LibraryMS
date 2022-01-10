@@ -20,7 +20,7 @@ namespace LibraryMS.Services
             _repository = repository;
             _mapper = mapper;
         }
-        public int AddValidity(string username, int planid)
+        public async Task<int> AddValidityAsync(string username, int planid)
         {
             var userplan = _repository.UserPlanValidity.GetUserPlanValidity(username, false);
             var plan = _repository.Plan.GetPlan(planid, false);
@@ -35,19 +35,19 @@ namespace LibraryMS.Services
                 userplan.planEnddate = userplan.planEnddate.AddDays(plan.Duration).Date;
             }
             _repository.UserPlanValidity.UpdateUserPlanValidity(userplan);
-            _repository.Save();
+            await _repository.SaveAsync();
             return 1;
 
         }
 
-        public void CreateValidity(string username)
+        public async void CreateValidity(string username)
         {
             UserPlanValidityDto userplan = new UserPlanValidityDto();
             userplan.UserName = username;
             userplan.planEnddate = DateTime.Today.AddDays(-1).Date;
             var userplanEntity = _mapper.Map<UserPlanValidity>(userplan);
             _repository.UserPlanValidity.CreateUserPlanValidity(userplanEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
         }
     }
 }

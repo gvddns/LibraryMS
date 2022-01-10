@@ -11,6 +11,7 @@ namespace Entities.DTO
     {
         [Required(ErrorMessage = "Book id is a required field.")]
         public int BookId { get; set; }
+        [Required(ErrorMessage = "Username is a required field.")]
         public string username { get; set; }
         public DateTime requestdate { get; set; }
         public DateTime startdate { get; set; }

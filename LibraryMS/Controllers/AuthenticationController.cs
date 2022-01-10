@@ -28,10 +28,11 @@ namespace LibraryMS.Controllers
         private readonly IMailService _mailService;
         private readonly IPlanValidity _planValidity;
         private readonly IGetUserData _getUserData;
+        private readonly IAddBookDate _addBookDate;
 
         public AuthenticationController(ILoggerManager logger, IMapper mapper, IRepositoryManager repository,
             UserManager<User> userManager, IAuthenticationManager authManager, IMailService mailService,
-            IPlanValidity planValidity, IGetUserData getUserData)
+            IPlanValidity planValidity, IGetUserData getUserData, IAddBookDate addBookDate)
         {
             _logger = logger;
             _mapper = mapper;
@@ -41,6 +42,7 @@ namespace LibraryMS.Controllers
             _mailService = mailService;
             _planValidity = planValidity;
             _getUserData = getUserData;
+            _addBookDate = addBookDate;
         }
 
         //[Authorize(Roles = "Admin")]
@@ -80,9 +82,8 @@ namespace LibraryMS.Controllers
                 return BadRequest(ModelState);
             }
             await _userManager.AddToRoleAsync(user, "User");
-            CreateMail createMail = new CreateMail(_repository, _logger, _mailService, _getUserData);
+            CreateMail createMail = new CreateMail(_repository, _logger, _mailService, _getUserData,_addBookDate);
             createMail.NewRegistrationMail(user.UserName, user.Email);
-            //_planValidity.CreateValidity(userForRegistration.UserName);
             return Ok("User Created");
             
         }
@@ -101,19 +102,33 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "User")]
         [HttpGet("Role")]
-        //[Route("GetRole")]
         public async Task<IActionResult> GetUserRole(string Username)
         {
             var role = await _getUserData.GetRoles(Username);
             return Ok(role);
         }
 
-        [HttpGet("Email")]
-        //[Route("GetRole")]
-        public async Task<IActionResult> GetUserEmail(string Username)
+        //[HttpGet("Email")]
+        ////[Route("GetRole")]
+        //public async Task<IActionResult> GetUserEmail(string Username)
+        //{
+        //    var role = await _getUserData.GetEmail(Username);
+        //    return Ok(role);
+        //}
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] PasswordDto passwordDto)
         {
-            var role = await _getUserData.GetEmail(Username);
-            return Ok(role);
+            var result = await _authManager.ChangePassword(passwordDto);
+            if (result.Succeeded)
+            {
+                return Ok("Successfully Changed Password");
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.TryAddModelError(error.Code, error.Description);
+            }
+            return BadRequest(ModelState);
         }
     }
 }

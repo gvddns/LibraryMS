@@ -15,6 +15,7 @@ namespace Contracts
         //IUserRepository User { get; }
         IPlanRepository Plan { get; }
         IUserPlanValidityRepository UserPlanValidity { get; }
+        Task SaveAsync();
         void Save();
     }
 }

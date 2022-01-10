@@ -22,6 +22,14 @@ namespace Repository
             Create(bookdate);
         }
 
+        public void CreateBookDate(IEnumerable<BookDate> bookdate)
+        {
+            foreach (var item in bookdate)
+            {
+                Create(item);
+            }
+        }
+
         public int FindNpofBooksForDate(int Bookid, DateTime date,bool trackChanges)
         {
             return (FindByCondition(b => b.BookId.Equals(Bookid) && b.date.Equals(date),trackChanges).Count());

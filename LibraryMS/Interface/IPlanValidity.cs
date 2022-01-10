@@ -7,7 +7,7 @@ namespace LibraryMS.Interface
 {
     public interface IPlanValidity
     {
-        public int AddValidity(string username, int planid);
+        public Task<int> AddValidityAsync(string username, int planid);
         public void CreateValidity(string username);
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryMS.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220109091329_second")]
-    partial class second
+    [Migration("20220110035301_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -116,8 +116,8 @@ namespace LibraryMS.Migrations
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("CategoryId");
 
@@ -169,13 +169,16 @@ namespace LibraryMS.Migrations
 
             modelBuilder.Entity("Entities.Models.RentRequest", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("rid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("approval")
                         .HasColumnType("nvarchar(max)");
@@ -198,49 +201,13 @@ namespace LibraryMS.Migrations
                     b.Property<string>("username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("rid");
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("RentRequests");
+                    b.HasIndex("Id");
 
-                    b.HasData(
-                        new
-                        {
-                            id = 1,
-                            BookId = 2,
-                            approval = "Pending",
-                            approvaldate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            enddate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            requestdate = new DateTime(2022, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            startdate = new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            totalrent = 20,
-                            username = "gvddns"
-                        },
-                        new
-                        {
-                            id = 2,
-                            BookId = 3,
-                            approval = "Pending",
-                            approvaldate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            enddate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            requestdate = new DateTime(2022, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            startdate = new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            totalrent = 30,
-                            username = "gvddns"
-                        },
-                        new
-                        {
-                            id = 3,
-                            BookId = 1,
-                            approval = "Pending",
-                            approvaldate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            enddate = new DateTime(2022, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            requestdate = new DateTime(2022, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            startdate = new DateTime(2022, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            totalrent = 40,
-                            username = "gvddns"
-                        });
+                    b.ToTable("RentRequests");
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -367,15 +334,15 @@ namespace LibraryMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c3679fdf-acf3-4901-9d61-4988a9f6832c",
-                            ConcurrencyStamp = "e937a789-9239-48a9-80cd-c7e654ebe368",
+                            Id = "168e6bb0-f62b-4462-b4ea-4f1ad026cb53",
+                            ConcurrencyStamp = "a6d6223b-3405-4327-ad03-2b0b54f5cc46",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "b8c2d7f9-1794-4397-9582-23259adcc0d6",
-                            ConcurrencyStamp = "58d3560c-cb38-47d9-9618-8fd2649ba444",
+                            Id = "d6373dba-77a6-4539-b485-dac4c0d6f50c",
+                            ConcurrencyStamp = "e847a356-9ea2-4355-b72e-325a9a5b2ab9",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
@@ -504,7 +471,13 @@ namespace LibraryMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id");
+
                     b.Navigation("book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

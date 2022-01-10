@@ -36,5 +36,31 @@ namespace LibraryMS.Services
             var users = await _userManager.GetUsersInRoleAsync("User");
             return (List<User>)users;
         }
+
+        public async Task<string> GetUserId(string username)
+        {
+            _user = await _userManager.FindByNameAsync(username);
+            if (_user != null)
+            {
+                var userid = await _userManager.GetUserIdAsync(_user);
+                return userid;
+            }
+            else
+                return null;
+        }
+
+        public async Task<string> CheckDates(string username, DateTime startdate, DateTime enddate)
+        {
+            _user = await _userManager.FindByNameAsync(username);
+            if (DateTime.Compare(startdate,enddate)>0)
+            {
+                return "Start Date can not be later than end date";
+            }
+            if (DateTime.Compare(enddate, _user.PlanDate)>0)
+            {
+                return "End Date can not be later than Membership end date";
+            }
+            return null;
+        }
     }
 }

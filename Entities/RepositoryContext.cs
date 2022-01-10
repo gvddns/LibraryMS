@@ -22,7 +22,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new BookConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new RentRequestConfiguration());
+            //modelBuilder.ApplyConfiguration(new RentRequestConfiguration());
         }
 
         public DbSet<Book> Books { get; set; }

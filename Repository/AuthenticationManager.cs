@@ -67,6 +67,13 @@ namespace Repository
             return tokenOptions; 
         }
 
-        
+        public async Task<IdentityResult> ChangePassword(PasswordDto passwordDto)
+        {
+            string username = passwordDto.username;
+            _user= await _userManager.FindByNameAsync(username);
+            IdentityResult result = await _userManager.ChangePasswordAsync(_user, passwordDto.oldpassword,
+                passwordDto.newpassword);
+            return result; 
+        }
     }
 }

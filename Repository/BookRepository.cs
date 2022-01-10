@@ -22,9 +22,15 @@ namespace Repository
             Create(book);
         }
 
-        public void DeleteBook(Book book)
+        public string DeleteBook(int id)
         {
+            Book book =GetBook(id, false);
+            if (book == null)
+            {
+                return "The book record couldn't be found.";
+            }
             Delete(book);
+            return "Book Deleted Successfully";
         }
 
         public IEnumerable<Book> GetAllBooks(bool trackChanges) =>

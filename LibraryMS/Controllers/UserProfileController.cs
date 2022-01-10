@@ -90,6 +90,15 @@ namespace LibraryMS.Controllers
                 user.PlanDate = DateTime.Today.AddDays(plan.Duration).Date;
             else
                 user.PlanDate = user.PlanDate.AddDays(plan.Duration).Date;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
             return Ok("New plan added");
         }
     }

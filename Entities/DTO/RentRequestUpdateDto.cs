@@ -8,13 +8,8 @@ namespace Entities.DTO
 {
     public class RentRequestUpdateDto
     {
-        public string username { get; set; }
-        public DateTime requestdate { get; set; }
-        public DateTime startdate { get; set; }
-        public DateTime enddate { get; set; }
-        public int totalrent { get; set; }
+        public int rid { get; set; }
         public string approval { get; set; }
-        public DateTime approvaldate { get; set; }
-        public int BookId { get; set; }
+        //public DateTime approvaldate { get; set; }
     }
 }

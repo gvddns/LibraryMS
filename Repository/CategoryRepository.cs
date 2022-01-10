@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,14 @@ namespace Repository
             Delete(category);
         }
 
-        public IEnumerable<Category> GetAllCategories(bool trackChanges)
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)
         {
-            return FindAll(trackChanges).OrderBy(c => c.CategoryName).ToList();
+            return await FindAll(trackChanges).OrderBy(c => c.CategoryName).ToListAsync();
         }
 
-        public Category GetCategory(int CategoryId, bool trackChanges)
+        public async Task<Category> GetCategoryAsync(int CategoryId, bool trackChanges)
         {
-            return FindByCondition(c => c.CategoryId.Equals(CategoryId), trackChanges).SingleOrDefault();
+            return await FindByCondition(c => c.CategoryId.Equals(CategoryId), trackChanges).SingleOrDefaultAsync();
         }
 
         public void UpdateCategory(Category category)

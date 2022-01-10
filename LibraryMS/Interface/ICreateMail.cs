@@ -8,6 +8,7 @@ namespace LibraryMS.Interface
 {
     public interface ICreateMail
     {
-        void NewMail(RentRequest rentRequest);
+        Task NewMail(RentRequest rentRequest);
+        void NewRegistrationMail(string username, string mailid);
     }
 }
