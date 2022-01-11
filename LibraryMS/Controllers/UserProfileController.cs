@@ -4,6 +4,7 @@ using Entities.DTO;
 using Entities.Models;
 using LibraryMS.Interface;
 using LoggerService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,6 @@ namespace LibraryMS.Controllers
 
 
         [HttpGet]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetAllProfile()
         {
             var users = await _userManager.GetUsersInRoleAsync("User");
@@ -48,7 +48,6 @@ namespace LibraryMS.Controllers
         }
 
         [HttpGet("Username")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> GetProfile(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -58,11 +57,9 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPut]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateProfile([FromBody] UserProfileEditDto userProfile)
         {
             string username = userProfile.UserName;
-            //var user = await
             var user= await _userManager.FindByNameAsync(username);
             user.Address = userProfile.Address;
             user.LastName = userProfile.LastName;
@@ -81,11 +78,13 @@ namespace LibraryMS.Controllers
             return Ok("User Profile Updated");
         }
 
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("PlanExtension")]
         public async Task<IActionResult> ExtendUserPlan(string username, int id)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var plan = _repository.Plan.GetPlan(id, false);
+            var plan = await _repository.Plan.GetPlanAsync(id);
             if (DateTime.Compare(DateTime.Today.Date, user.PlanDate) >= 1)
                 user.PlanDate = DateTime.Today.AddDays(plan.Duration).Date;
             else

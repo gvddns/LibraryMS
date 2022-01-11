@@ -9,13 +9,13 @@ using Entities.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Entities
-{
+{                                   //Declaring DbContext with microsoft identity
     public class RepositoryContext : IdentityDbContext<User>
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         { 
         }
-
+        //Adding Configuration files while migration
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             base.OnModelCreating(modelBuilder);
@@ -24,6 +24,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             //modelBuilder.ApplyConfiguration(new RentRequestConfiguration());
         }
+
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }

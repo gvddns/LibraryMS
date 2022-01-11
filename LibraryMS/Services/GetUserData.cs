@@ -24,6 +24,7 @@ namespace LibraryMS.Services
             return roles.FirstOrDefault();
         }
 
+        //Method to get email from username
         public async Task<string> GetEmail(string username)
         {
             _user = await _userManager.FindByNameAsync(username);
@@ -31,11 +32,13 @@ namespace LibraryMS.Services
             return email;
         }
 
+        //Method to get all Users with role user
         public async Task<List<User>> GetAllUsers()
         {
             var users = await _userManager.GetUsersInRoleAsync("User");
             return (List<User>)users;
         }
+
 
         public async Task<string> GetUserId(string username)
         {
@@ -49,6 +52,7 @@ namespace LibraryMS.Services
                 return null;
         }
 
+        //Validation for dates entries for renting
         public async Task<string> CheckDates(string username, DateTime startdate, DateTime enddate)
         {
             _user = await _userManager.FindByNameAsync(username);

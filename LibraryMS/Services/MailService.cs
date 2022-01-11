@@ -20,6 +20,8 @@ namespace LibraryMS.Services
         {
             _mailSettings = mailSettings.Value;
         }
+
+        //Method to send mail
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
             var email = new MimeMessage();

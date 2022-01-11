@@ -10,16 +10,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LibraryMS.Extensions
 {
     public static class ServiceExtensions
-    {
+    {   
+        //Cross-Origin Resource Sharing
         public static void ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>
             {
@@ -29,14 +27,16 @@ namespace LibraryMS.Extensions
                     .AllowAnyHeader());
             });
 
-        public static void ConfigureIISIntegration(this IServiceCollection services) =>
-            services.Configure<IISOptions>(options => 
-            {
-            });
+        //public static void ConfigureIISIntegration(this IServiceCollection services) =>
+        //    services.Configure<IISOptions>(options => 
+        //    {
+        //    });
 
+        //Logger Services
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
 
+        //Configuration of SQL Connection
         public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration) =>
             services.AddDbContext<RepositoryContext>(opts => 
@@ -46,6 +46,7 @@ namespace LibraryMS.Extensions
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
 
+        //Configuration of Identity for authentication and authorization
         public static void ConfigureIdentity(this IServiceCollection services)
         {
             var builder = services.AddIdentityCore<User>(o =>
@@ -63,6 +64,7 @@ namespace LibraryMS.Extensions
                 .AddDefaultTokenProviders();
         }
 
+        //JWT Bearer Settings
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");

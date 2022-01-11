@@ -9,8 +9,8 @@ namespace Contracts
 {
     public interface IUserRepository
     {
-        public IEnumerable<User> GetAllUsers(bool trackChanges);
-        public User GetUser(int UserId, bool trackChanges);
+        public IEnumerable<User> GetAllUsers();
+        public User GetUser(int UserId);
         void CreateUser(User user);
         void DeleteUser(User user);
         void UpdateUser(User user);

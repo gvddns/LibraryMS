@@ -33,9 +33,9 @@ namespace LibraryMS.Controllers
         }
 
         [HttpGet] 
-        public IActionResult GetBooks() 
+        public async Task<IActionResult> GetBooks() 
         {
-            var books = _repository.Book.GetAllBooks(trackChanges: false);
+            var books = await _repository.Book.GetAllBooksAsync();
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(books);
             return Ok(booksDto);    
         }
@@ -58,13 +58,13 @@ namespace LibraryMS.Controllers
         [HttpGet("{categoryid}")]
         public async Task<IActionResult> GetBooksForCategory(int categoryid)
         {
-            var category = await _repository.Category.GetCategoryAsync(categoryid, trackChanges: false);
+            var category = await _repository.Category.GetCategoryAsync(categoryid);
             if (category == null)
             {
                 _logger.LogInfo($"Category with id: {categoryid} doesn't exist in the database.");
                 return NotFound();
             }
-            var booksforcategory = _repository.Book.GetBooks(categoryid, trackChanges: false);
+            var booksforcategory = await _repository.Book.GetBooksAsync(categoryid);
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksforcategory);
             return Ok(booksDto);
         }
@@ -73,7 +73,7 @@ namespace LibraryMS.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] BookCreateDto book)
         {
-            var category = await _repository.Category.GetCategoryAsync(book.CategoryId,false);
+            var category = await _repository.Category.GetCategoryAsync(book.CategoryId);
             if (category == null)
             {
                 _logger.LogError("Category sent from client is null.");
@@ -89,7 +89,7 @@ namespace LibraryMS.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var response= _repository.Book.DeleteBook(id);
+            var response= await _repository.Book.DeleteBookAsync(id);
             await _repository.SaveAsync();
             return Ok(response);
         }
@@ -113,16 +113,16 @@ namespace LibraryMS.Controllers
 
         [HttpGet]
         [Route("AvailableBooks")]
-        public IActionResult GetAvailableBooks(int bookid, string d)
+        public async Task<IActionResult> GetAvailableBooks(int bookid, string d)
         {
             var date = DateTime.Parse(d);
-            var book = _repository.Book.GetBook(bookid, trackChanges: false);
+            var book = await _repository.Book.GetBookAsync(bookid);
             if (book == null)
             {
                 _logger.LogInfo($"Book with id: {bookid} doesn't exist in the database.");
                 return NotFound();
             }
-            int availablebooks =book.NoOfBooks - _repository.BookDate.FindNpofBooksForDate(bookid, date, false);
+            int availablebooks =book.NoOfBooks - _repository.BookDate.FindNpofBooksForDate(bookid, date);
             return Ok(availablebooks);
         }
     }

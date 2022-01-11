@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,27 +23,19 @@ namespace Repository
             Create(bookdate);
         }
 
-        public void CreateBookDate(IEnumerable<BookDate> bookdate)
+        public int FindNpofBooksForDate(int Bookid, DateTime date)
         {
-            foreach (var item in bookdate)
-            {
-                Create(item);
-            }
+            return (FindByCondition(b => b.BookId.Equals(Bookid) && b.date.Equals(date)).Count());
         }
 
-        public int FindNpofBooksForDate(int Bookid, DateTime date,bool trackChanges)
+        public async Task<IEnumerable<BookDate>> GetAllBookDatesAsync()
         {
-            return (FindByCondition(b => b.BookId.Equals(Bookid) && b.date.Equals(date),trackChanges).Count());
+            return await FindAll().ToListAsync();
         }
 
-        public IEnumerable<BookDate> GetAllBookDates(bool trackChanges)
+        public async Task<IEnumerable<BookDate>> GetBookDatesAsync(int BookId)
         {
-            return FindAll(trackChanges).ToList();
-        }
-
-        public IEnumerable<BookDate> GetBookDates(int BookId, bool trackChanges)
-        {
-            return FindByCondition(b => b.BookId.Equals(BookId), trackChanges).ToList();
+            return await FindByCondition(b => b.BookId.Equals(BookId)).ToListAsync();
         }
     }
 }

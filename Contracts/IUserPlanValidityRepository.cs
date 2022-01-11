@@ -11,7 +11,7 @@ namespace Contracts
     {
         void CreateUserPlanValidity(UserPlanValidity userPlanValidity);
         void UpdateUserPlanValidity(UserPlanValidity userPlanValidity);
-        UserPlanValidity GetUserPlanValidity(string UserName, bool trackChanges);
-        public IEnumerable<UserPlanValidity> GetAllUserPlanValidity(bool trackChanges);
+        UserPlanValidity GetUserPlanValidity(string UserName);
+        public IEnumerable<UserPlanValidity> GetAllUserPlanValidity();
     }
 }

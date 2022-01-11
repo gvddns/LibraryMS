@@ -39,17 +39,19 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult GetRentRequests()
+        public async Task<IActionResult> GetRentRequests()
         {
-            var rentrequest = _repository.RentRequest.GetAllRentRequests(trackChanges: false);
+            var rentrequest = await _repository.RentRequest.GetAllRentRequestsAsync();
             var rentrequestDto = _mapper.Map<IEnumerable<RentRequestDto>>(rentrequest);
             return Ok(rentrequestDto);
         }
 
+        //[Authorize(Roles = "User")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("username")]
-        public IActionResult GetRentrequests(string username)
+        public async Task<IActionResult> GetRentrequests(string username)
         {
-            var rentrequests = _repository.RentRequest.GetRentRequests(username, trackChanges: false);
+            var rentrequests = await _repository.RentRequest.GetRentRequestsAsync(username);
             var rentrequestDto = _mapper.Map<IEnumerable<RentRequestDto>>(rentrequests);
             return Ok(rentrequestDto);
         }
@@ -77,7 +79,7 @@ namespace LibraryMS.Controllers
             }
             var rentrequestsEntity = _mapper.Map<RentRequest>(rentrequests);
             rentrequestsEntity.approval = "Pending";
-            var book = _repository.Book.GetBook(rentrequestsEntity.BookId, false);
+            var book = await _repository.Book.GetBookAsync(rentrequestsEntity.BookId);
 
             rentrequestsEntity.totalrent = Math.Max(book.rent,(rentrequestsEntity.startdate.Date - rentrequestsEntity.enddate.Date).Days*book.rent);
             _repository.RentRequest.CreateRentRequest(rentrequestsEntity);
@@ -89,7 +91,7 @@ namespace LibraryMS.Controllers
         [HttpPut]
         public async Task<IActionResult> RentRequestUpdate([FromBody] RentRequestUpdateDto rentRequest)
         {
-            RentRequest rentRequestToUpdate = _repository.RentRequest.GetRentRequest(rentRequest.rid, false);
+            RentRequest rentRequestToUpdate = await _repository.RentRequest.GetRentRequestAsync(rentRequest.rid);
             if (rentRequestToUpdate == null)
             {
                 return NotFound("The RentRequest record couldn't be found.");
@@ -102,27 +104,8 @@ namespace LibraryMS.Controllers
 
             CreateMail createMail = new CreateMail(_repository,_logger,_mailService, _getUserData, _addBookDate);
             if (rentRequest.approval == "Approved" &&  approval=="Pending")
-            {
                 await createMail.NewMail(rentRequestToUpdate);
-
-                //    BookDateDto bookDate = new BookDateDto()
-                //    {
-                //        BookId = rentRequest.BookId
-                //    };
-
-                //    while (DateTime.Compare(rentRequest.startdate.Date, rentRequest.enddate.Date) <= 0)
-                //    {
-                //        bookDate.date = rentRequest.startdate.Date;
-                //        var bookDateEntity = _mapper.Map<BookDate>(bookDate);
-
-                //        _repository.BookDate.CreateBookDate(bookDateEntity);
-                //        _repository.Save();
-                //        rentRequest.startdate = rentRequest.startdate.AddDays(1);
-                //    }
-
-            }
-
-            return Ok(rentRequestToUpdate);
+            return Ok("Request Processed");
         }
     }
 }

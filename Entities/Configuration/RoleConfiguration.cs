@@ -13,6 +13,7 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
+            //Data Entries via migration
             builder.HasData
                 (new IdentityRole
                 {

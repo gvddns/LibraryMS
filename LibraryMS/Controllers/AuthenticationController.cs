@@ -100,6 +100,7 @@ namespace LibraryMS.Controllers
             return Ok(new { Token = await _authManager.CreateToken() });
         }
 
+        //[Authorize(Roles = "Admin")]
         //[Authorize(Roles = "User")]
         [HttpGet("Role")]
         public async Task<IActionResult> GetUserRole(string Username)
@@ -116,6 +117,8 @@ namespace LibraryMS.Controllers
         //    return Ok(role);
         //}
 
+        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "User")]
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] PasswordDto passwordDto)
         {

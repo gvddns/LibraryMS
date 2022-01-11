@@ -13,6 +13,7 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<RentRequest> builder)
         {
+            ////Data Entries via migration
             builder.HasData(
                 new RentRequest
                 {

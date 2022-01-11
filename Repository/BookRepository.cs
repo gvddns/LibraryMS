@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,9 @@ namespace Repository
             Create(book);
         }
 
-        public string DeleteBook(int id)
+        public async Task<string> DeleteBookAsync(int id)
         {
-            Book book =GetBook(id, false);
+            Book book = await GetBookAsync(id);
             if (book == null)
             {
                 return "The book record couldn't be found.";
@@ -33,19 +34,19 @@ namespace Repository
             return "Book Deleted Successfully";
         }
 
-        public IEnumerable<Book> GetAllBooks(bool trackChanges) =>
+        public async Task<IEnumerable<Book>> GetAllBooksAsync() =>
 
-            FindAll(trackChanges).OrderBy(b => b.BookId).ToList();
+            await FindAll().OrderBy(b => b.BookId).ToListAsync();
 
 
-        public Book GetBook(int bookId, bool trackChanges)=>
+        public async Task<Book> GetBookAsync(int bookId)=>
         
-            FindByCondition(b => b.BookId.Equals(bookId), trackChanges).SingleOrDefault();
+            await FindByCondition(b => b.BookId.Equals(bookId)).SingleOrDefaultAsync();
         
 
-        public IEnumerable<Book> GetBooks(int categoryId, bool trackChanges)=>
+        public async Task<IEnumerable<Book>> GetBooksAsync(int categoryId)=>
         
-            FindByCondition(b => b.CategoryId.Equals(categoryId), trackChanges).ToList();
+            await FindByCondition(b => b.CategoryId.Equals(categoryId)).ToListAsync();
 
 
         void IBookRepository.UpdateBook(Book book)

@@ -27,14 +27,14 @@ namespace Repository
             Delete(category);
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            return await FindAll(trackChanges).OrderBy(c => c.CategoryName).ToListAsync();
+            return await FindAll().OrderBy(c => c.CategoryName).ToListAsync();
         }
 
-        public async Task<Category> GetCategoryAsync(int CategoryId, bool trackChanges)
+        public async Task<Category> GetCategoryAsync(int CategoryId)
         {
-            return await FindByCondition(c => c.CategoryId.Equals(CategoryId), trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(c => c.CategoryId.Equals(CategoryId)).SingleOrDefaultAsync();
         }
 
         public void UpdateCategory(Category category)

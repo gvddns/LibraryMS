@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,9 @@ namespace Repository
             Create(rentrequest);
         }
 
-        public RentRequest GetRentRequest(int id, bool trackChanges)
+        public async Task< RentRequest> GetRentRequestAsync(int id)
         {
-            return FindByCondition(c => c.rid.Equals(id), trackChanges).SingleOrDefault();
+            return await FindByCondition(c => c.rid.Equals(id)).SingleOrDefaultAsync();
         }
 
         public void UpdateRentRequest(RentRequest rentRequest)
@@ -32,14 +33,14 @@ namespace Repository
             Update(rentRequest);
         }
 
-        IEnumerable<RentRequest> IRentRequestRepository.GetAllRentRequests(bool trackChanges)
+        async Task<IEnumerable<RentRequest>> IRentRequestRepository.GetAllRentRequestsAsync()
         {
-            return FindAll(trackChanges).OrderBy(b => b.rid).ToList();
+            return await FindAll().OrderBy(b => b.rid).ToListAsync();
         }
 
-        IEnumerable<RentRequest> IRentRequestRepository.GetRentRequests(string username, bool trackChanges)
+        async Task<IEnumerable<RentRequest>> IRentRequestRepository.GetRentRequestsAsync(string username)
         {
-            return FindByCondition(b => b.username.Equals(username), trackChanges).ToList();
+            return await FindByCondition(b => b.username.Equals(username)).ToListAsync();
         }
     }
 }

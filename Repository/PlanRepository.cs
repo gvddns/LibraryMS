@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Repository
         {
 
         }
+
         public void CreatePlan(Plan plan)
         {
             Create(plan);
@@ -26,14 +28,14 @@ namespace Repository
             Delete(plan);
         }
 
-        public IEnumerable<Plan> GetAllPlans(bool trackChanges)
+        public async Task<IEnumerable<Plan>> GetAllPlansAsync()
         {
-            return FindAll(trackChanges).ToList();
+            return await FindAll().ToListAsync();
         }
 
-        public Plan GetPlan(int id, bool trackChanges)
+        public async Task<Plan> GetPlanAsync(int id)
         {
-            return FindByCondition(c => c.Planid.Equals(id), trackChanges).SingleOrDefault();
+            return await FindByCondition(c => c.Planid.Equals(id)).SingleOrDefaultAsync();
         }
 
         public void UpdatePlan(Plan plan)

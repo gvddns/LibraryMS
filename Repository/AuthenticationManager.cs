@@ -30,7 +30,6 @@ namespace Repository
             return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
         }
 
-
         public async Task<string> CreateToken() 
         {
             var signingCredentials = GetSigningCredentials();

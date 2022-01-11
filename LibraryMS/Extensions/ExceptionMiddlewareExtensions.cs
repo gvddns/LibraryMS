@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraryMS.Extensions
 {
+    //Global Exception Handling
     public static class ExceptionMiddlewareExtensions
     {
         public static void ConfigureExceptionHandler(this IApplicationBuilder app,

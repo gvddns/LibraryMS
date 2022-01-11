@@ -20,6 +20,7 @@ namespace Entities.DTO
         public int NoOfBooks { get; set; }
         [Required(ErrorMessage = "Rent is a required field.")]
         public int rent { get; set; }
+        [Required(ErrorMessage = "CategoryId is a required field.")]
         public int CategoryId { get; set; }
         
     }

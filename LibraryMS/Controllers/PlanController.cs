@@ -29,9 +29,9 @@ namespace LibraryMS.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPlans()
+        public async Task<IActionResult> GetPlans()
         {
-            var plans = _repository.Plan.GetAllPlans(trackChanges: false);
+            var plans = await _repository.Plan.GetAllPlansAsync();
             var plansDto = _mapper.Map<IEnumerable<PlanDto>>(plans);
             return Ok(plansDto);
         }
@@ -50,7 +50,7 @@ namespace LibraryMS.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlan(int id)
         {
-            Plan plan = _repository.Plan.GetPlan(id, false);
+            Plan plan = await _repository.Plan.GetPlanAsync(id);
             if (plan == null)
             {
                 _logger.LogInfo($"Plan with id: {id} doesn't exist in the database.");
@@ -65,7 +65,7 @@ namespace LibraryMS.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] PlanCreateDto plan)
         {
-            Plan planToUpdate = _repository.Plan.GetPlan(id, false);
+            Plan planToUpdate = await _repository.Plan.GetPlanAsync(id);
             if (planToUpdate == null)
             {
                 return NotFound("The Plan record couldn't be found.");

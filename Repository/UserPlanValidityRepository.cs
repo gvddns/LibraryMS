@@ -20,14 +20,14 @@ namespace Repository
             Create(userPlanValidity);
         }
 
-        public UserPlanValidity GetUserPlanValidity(string UserName, bool trackChanges)
+        public UserPlanValidity GetUserPlanValidity(string UserName)
         {
-            return FindByCondition(c => c.UserName.Equals(UserName), trackChanges).SingleOrDefault();
+            return FindByCondition(c => c.UserName.Equals(UserName)).SingleOrDefault();
         }
 
-        public IEnumerable< UserPlanValidity> GetAllUserPlanValidity(bool trackChanges)
+        public IEnumerable< UserPlanValidity> GetAllUserPlanValidity()
         {
-            return FindAll(trackChanges).ToList();
+            return FindAll().ToList();
         }
 
         public void UpdateUserPlanValidity(UserPlanValidity userPlanValidity)

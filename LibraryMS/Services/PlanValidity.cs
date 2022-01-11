@@ -22,8 +22,8 @@ namespace LibraryMS.Services
         }
         public async Task<int> AddValidityAsync(string username, int planid)
         {
-            var userplan = _repository.UserPlanValidity.GetUserPlanValidity(username, false);
-            var plan = _repository.Plan.GetPlan(planid, false);
+            var userplan = _repository.UserPlanValidity.GetUserPlanValidity(username);
+            var plan = await _repository.Plan.GetPlanAsync(planid);
             //var userplanDto = _mapper.Map<UserPlanValidityDto>(userplan);
             //_repository.UserPlanValidity.CreateUserPlanValidity();
             if (DateTime.Compare(userplan.planEnddate, DateTime.Today.Date) <= 0)

@@ -14,6 +14,7 @@ namespace LibraryMS.Services
 {
     public class BookBL : IBookBL
     {
+        //Declaration of Interfaces
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
@@ -24,14 +25,15 @@ namespace LibraryMS.Services
             _logger = logger;
             _mapper = mapper;
         }
+
+        //Code for Book Updation
         public async Task<string> UpdateBookbyId(int id, BookCreateDto book)
         {
-            Book bookToUpdate = _repository.Book.GetBook(id, false);
+            Book bookToUpdate = await _repository.Book.GetBookAsync(id);
             if (bookToUpdate == null)
             {
                 return "The book record couldn't be found.";
             }
-
             var bookEntity = _mapper.Map<Book>(book);
             bookEntity.BookId = id;
             _repository.Book.UpdateBook(bookEntity);

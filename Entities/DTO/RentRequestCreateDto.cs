@@ -14,7 +14,9 @@ namespace Entities.DTO
         [Required(ErrorMessage = "Username is a required field.")]
         public string username { get; set; }
         public DateTime requestdate { get; set; }
+        [Required(ErrorMessage = "Start Date is a required field.")]
         public DateTime startdate { get; set; }
+        [Required(ErrorMessage = "End Date is a required field.")]
         public DateTime enddate { get; set; }
     }
 }

@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace Entities.Configuration
 {
     class BookConfiguration : IEntityTypeConfiguration<Book>
-    {
+    {   
+        //Data Entries via migration
         public void Configure(EntityTypeBuilder<Book> builder)
         {
             builder.HasData(

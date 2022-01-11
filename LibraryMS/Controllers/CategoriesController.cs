@@ -4,11 +4,8 @@ using Entities.DTO;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LibraryMS.Controllers
@@ -31,7 +28,7 @@ namespace LibraryMS.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories = await _repository.Category.GetAllCategoriesAsync(trackChanges: false);
+            var categories = await _repository.Category.GetAllCategoriesAsync();
             var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
             return Ok(categoriesDto);
         }
@@ -39,7 +36,7 @@ namespace LibraryMS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {
-            var category = await _repository.Category.GetCategoryAsync(id, trackChanges: false);
+            var category = await _repository.Category.GetCategoryAsync(id);
             var categoryDto = _mapper.Map<CategoryDto>(category);
             if (categoryDto == null)
             {
@@ -71,7 +68,7 @@ namespace LibraryMS.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            Category category = await _repository.Category.GetCategoryAsync(id, false);
+            Category category = await _repository.Category.GetCategoryAsync(id);
             if (category == null)
             {
                 _logger.LogInfo($"Category with id: {id} doesn't exist in the database.");
@@ -82,7 +79,7 @@ namespace LibraryMS.Controllers
             return  Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CategoryCreateDto category)
         {
@@ -90,7 +87,7 @@ namespace LibraryMS.Controllers
             {
                 return BadRequest("category is null.");
             }
-            Category categoryToUpdate = await _repository.Category.GetCategoryAsync(id, false);
+            Category categoryToUpdate = await _repository.Category.GetCategoryAsync(id);
             if (categoryToUpdate == null)
             {
                 return NotFound("The category record couldn't be found.");

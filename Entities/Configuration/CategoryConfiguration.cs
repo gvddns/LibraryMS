@@ -11,6 +11,7 @@ namespace Entities.Configuration
 {
     class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
+        //Data Entries via migration
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasData

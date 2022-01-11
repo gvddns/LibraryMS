@@ -26,17 +26,17 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult GetAllBookDates()
+        public async Task<IActionResult> GetAllBookDates()
         {
-            var bookdates = _repository.BookDate.GetAllBookDates(trackChanges: false);
+            var bookdates = await _repository.BookDate.GetAllBookDatesAsync();
             return Ok(bookdates);
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
-        public IActionResult GetBookdates(int id)
+        public async Task<IActionResult> GetBookdates(int id)
         {
-            var bookdates = _repository.BookDate.GetBookDates(id, trackChanges: false);
+            var bookdates = await _repository.BookDate.GetBookDatesAsync(id);
             if (bookdates == null)
             {
                 _logger.LogInfo($"BookDate with id: {id} doesn't exist in the database.");
@@ -46,7 +46,6 @@ namespace LibraryMS.Controllers
                 return Ok(bookdates);    
         }
 
-        //[Authorize(Roles = "User")]
         //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateBookDate([FromBody] BookDate bookdates)

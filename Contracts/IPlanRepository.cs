@@ -9,10 +9,10 @@ namespace Contracts
 {
     public interface IPlanRepository
     {
-        public IEnumerable<Plan> GetAllPlans(bool trackChanges);
+        public Task<IEnumerable<Plan>> GetAllPlansAsync();
         void CreatePlan(Plan plan);
         public void DeletePlan(Plan plan);
         public void UpdatePlan(Plan plan);
-        Plan GetPlan(int id, bool v);
+        Task<Plan> GetPlanAsync(int id);
     }
 }
