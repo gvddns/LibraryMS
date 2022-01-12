@@ -11,8 +11,9 @@ namespace Contracts
     {
         public Task<IEnumerable<Category>> GetAllCategoriesAsync();
         public Task<Category> GetCategoryAsync(int CategoryId);
+        public Category GetCategory(int CategoryId);
         void CreateCategory(Category category);
         public void DeleteCategory(Category category);
-        public void UpdateCategory(Category category);
+        public void UpdateCategoryAsync(Category category);
     }
 }

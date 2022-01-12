@@ -99,12 +99,13 @@ namespace LibraryMS.Controllers
             string approval = rentRequestToUpdate.approval;
             rentRequestToUpdate.approval = rentRequest.approval;
             rentRequestToUpdate.approvaldate = DateTime.Today.Date;
-            _repository.RentRequest.UpdateRentRequest(rentRequestToUpdate);
             _repository.Save();
 
             CreateMail createMail = new CreateMail(_repository,_logger,_mailService, _getUserData, _addBookDate);
             if (rentRequest.approval == "Approved" &&  approval=="Pending")
                 await createMail.NewMail(rentRequestToUpdate);
+
+            
             return Ok("Request Processed");
         }
     }

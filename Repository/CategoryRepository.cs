@@ -32,14 +32,21 @@ namespace Repository
             return await FindAll().OrderBy(c => c.CategoryName).ToListAsync();
         }
 
+        public Category GetCategory(int CategoryId)
+        {
+            return FindByCondition(c => c.CategoryId.Equals(CategoryId)).SingleOrDefault();
+        }
+
         public async Task<Category> GetCategoryAsync(int CategoryId)
         {
             return await FindByCondition(c => c.CategoryId.Equals(CategoryId)).SingleOrDefaultAsync();
         }
 
-        public void UpdateCategory(Category category)
+        public void UpdateCategoryAsync(Category category)
         {
-            Update(category);
+            Category categoryEntity = GetCategory(category.CategoryId);
+            if (categoryEntity != null)
+                UpdateAsync(category);
         }
     }
 }

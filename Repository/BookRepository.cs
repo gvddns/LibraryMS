@@ -38,6 +38,10 @@ namespace Repository
 
             await FindAll().OrderBy(b => b.BookId).ToListAsync();
 
+        public Book GetBook(int BookId)
+        {
+            return FindByCondition(b => b.BookId.Equals(BookId)).SingleOrDefault();
+        }
 
         public async Task<Book> GetBookAsync(int bookId)=>
         
@@ -49,9 +53,11 @@ namespace Repository
             await FindByCondition(b => b.CategoryId.Equals(categoryId)).ToListAsync();
 
 
-        void IBookRepository.UpdateBook(Book book)
+        void IBookRepository.UpdateBookAsync(Book book)
         {
-            Update(book);
+            Book bookEntity = GetBook(book.BookId);
+            if(bookEntity!=null)
+            UpdateAsync(book);
         }
     }
 }

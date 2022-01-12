@@ -81,7 +81,7 @@ namespace LibraryMS.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] CategoryCreateDto category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryCreateDto category)
         {
             if (category == null)
             {
@@ -92,10 +92,8 @@ namespace LibraryMS.Controllers
             {
                 return NotFound("The category record couldn't be found.");
             }
-            var categoryEntity = _mapper.Map<Category>(category);
-            categoryEntity.CategoryId  = id;
-            _repository.Category.UpdateCategory(categoryEntity);
-            await _repository.SaveAsync();
+            _mapper.Map(category, categoryToUpdate);
+            _repository.Save();
             return NoContent();
         }
     }

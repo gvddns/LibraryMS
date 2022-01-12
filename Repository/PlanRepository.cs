@@ -33,14 +33,20 @@ namespace Repository
             return await FindAll().ToListAsync();
         }
 
+        public Plan GetPlan(int id)
+        {
+            return FindByCondition(c => c.Planid.Equals(id)).SingleOrDefault();
+        }
+
         public async Task<Plan> GetPlanAsync(int id)
         {
             return await FindByCondition(c => c.Planid.Equals(id)).SingleOrDefaultAsync();
         }
 
-        public void UpdatePlan(Plan plan)
+        public void UpdatePlanAsync(Plan plan)
         {
-            Update(plan);
+
+            UpdateAsync(plan);
         }
     }
 }

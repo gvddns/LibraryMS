@@ -32,7 +32,7 @@ namespace Repository
 
         public void UpdateUserPlanValidity(UserPlanValidity userPlanValidity)
         {
-            Update(userPlanValidity);
+            UpdateAsync(userPlanValidity);
         }
     }
 }

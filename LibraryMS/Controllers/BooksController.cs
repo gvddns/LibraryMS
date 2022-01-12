@@ -96,19 +96,18 @@ namespace LibraryMS.Controllers
         
         //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] BookCreateDto book)
+        public async Task<IActionResult> UpdateBook(int id, [FromBody] BookCreateDto book)
         {
-            return Ok( await _bookbl.UpdateBookbyId(id,book));
-            //Book bookToUpdate = _repository.Book.GetBook(id,false);
-            //if (bookToUpdate == null)
-            //{
-            //    return NotFound("The book record couldn't be found.");
-            //}
-            //var bookEntity = _mapper.Map<Book>(book);
-            //bookEntity.BookId= id;
-            //_repository.Book.UpdateBook(bookEntity);
-            //await _repository.SaveAsync();
-            //return Ok("Updated Successfully");
+            Book bookToUpdate = await _repository.Book.GetBookAsync(id);
+            if (bookToUpdate == null)
+            {
+                return NotFound("The book record couldn't be found.");
+            }
+            _mapper.Map(book, bookToUpdate);
+            _repository.Save();
+            return Ok("Updated Successfully");
+            
+            
         }
 
         [HttpGet]

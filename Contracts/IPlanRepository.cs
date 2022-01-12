@@ -12,7 +12,8 @@ namespace Contracts
         public Task<IEnumerable<Plan>> GetAllPlansAsync();
         void CreatePlan(Plan plan);
         public void DeletePlan(Plan plan);
-        public void UpdatePlan(Plan plan);
+        public void UpdatePlanAsync(Plan plan);
         Task<Plan> GetPlanAsync(int id);
+        Plan GetPlan(int id);
     }
 }

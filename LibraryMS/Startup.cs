@@ -52,7 +52,7 @@ namespace LibraryMS
             services.AddControllers();
             services.ConfigureCors();
             services.AddAutoMapper(typeof(Startup));
-            //services.ConfigureIISIntegration();
+            services.ConfigureIISIntegration();
             services.ConfigureRepositoryManager();
             services.AddAuthentication();
             services.ConfigureJWT(Configuration);

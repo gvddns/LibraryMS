@@ -36,7 +36,7 @@ namespace LibraryMS.Services
             }
             var bookEntity = _mapper.Map<Book>(book);
             bookEntity.BookId = id;
-            _repository.Book.UpdateBook(bookEntity);
+            _repository.Book.UpdateBookAsync(bookEntity);
             await _repository.SaveAsync();
             return "Updated Successfully";
         }

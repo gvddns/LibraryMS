@@ -13,6 +13,6 @@ namespace Contracts
         public Task<IEnumerable<RentRequest>> GetAllRentRequestsAsync();
         Task<IEnumerable<RentRequest>> GetRentRequestsAsync(string username);
         public Task<RentRequest> GetRentRequestAsync(int UserId);
-        public void UpdateRentRequest(RentRequest rentRequest);
+        public void UpdateRentRequestAsync(RentRequest rentRequest);
     }
 }

@@ -70,10 +70,8 @@ namespace LibraryMS.Controllers
             {
                 return NotFound("The Plan record couldn't be found.");
             }
-            var planEntity = _mapper.Map<Plan>(plan);
-            planEntity.Planid = id;
-            _repository.Plan.UpdatePlan(planEntity);
-            await _repository.SaveAsync();
+            _mapper.Map(plan, planToUpdate);
+            _repository.Save();
             return NoContent();
         }
     }

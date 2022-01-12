@@ -28,9 +28,9 @@ namespace Repository
             return await FindByCondition(c => c.rid.Equals(id)).SingleOrDefaultAsync();
         }
 
-        public void UpdateRentRequest(RentRequest rentRequest)
+        public void UpdateRentRequestAsync(RentRequest rentRequest)
         {
-            Update(rentRequest);
+            UpdateAsync(rentRequest);
         }
 
         async Task<IEnumerable<RentRequest>> IRentRequestRepository.GetAllRentRequestsAsync()
