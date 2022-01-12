@@ -77,14 +77,20 @@ namespace LibraryMS.Controllers
                 _logger.LogError(validity);
                 return BadRequest(validity);
             }
+            var book = _repository.Book.GetBook(rentrequests.BookId);
+            if(book==null)
+            {
+                _logger.LogError("Book does not exist");
+                return BadRequest("Book does not exist");
+            }
             var rentrequestsEntity = _mapper.Map<RentRequest>(rentrequests);
-            rentrequestsEntity.approval = "Pending";
-            var book = await _repository.Book.GetBookAsync(rentrequestsEntity.BookId);
+            rentrequestsEntity.totalrent = book.rent;//Math.Max(book.rent//, 
+                //(rentrequestsEntity.startdate.Date - rentrequestsEntity.enddate.Date).Days * book.rent);
 
-            rentrequestsEntity.totalrent = Math.Max(book.rent,(rentrequestsEntity.startdate.Date - rentrequestsEntity.enddate.Date).Days*book.rent);
+            rentrequestsEntity.approval = "Pending";
             _repository.RentRequest.CreateRentRequest(rentrequestsEntity);
-            await _repository.SaveAsync();
-            return Ok(rentrequests);
+            _repository.Save();
+            return Ok();
         }
 
         //[Authorize(Roles = "Admin")]

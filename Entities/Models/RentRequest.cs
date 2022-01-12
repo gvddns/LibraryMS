@@ -26,6 +26,6 @@ namespace Entities.Models
 
         [ForeignKey(nameof(Book))]
         public int BookId { get; set; }
-        public Category book { get; set; }
+        public Book book { get; set; }
     }
 }
